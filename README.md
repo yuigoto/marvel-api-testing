@@ -3,36 +3,36 @@ A B4A é uma empresa que foi criada em 2017 com a aquisição das empresas Glamb
 Hoje, operamos duas marcas principais que são líderes em seus respectivos segmentos: a Glambox, o maior serviço de assinatura de produtos de beleza da América Latina, focado na audiência feminina, e a Men’s Market, o maior e-commerce de produtos de beleza masculinos. 
 
 
-## Vaga
+# Vaga
 Estamos buscando desenvolvedor(a) front-end para integrar a equipe de TI da B4A.
 - Local de trabalho: Bairro Vila Olímpia - São Paulo, SP.
 - Remuneração: a combinar
 - Contratação: PJ.
 
-## Responsabilidades
+# Responsabilidades
 - Desenvolvimento de Produtos atuando em:
   - Criação e manutenção de interfaces utilizando HTML, CSS, Javascript e  consumindo API Rest;
   - Aplicações SPA (Single Page Applications);
   - Interfaces mobile friendly
 
-## Requisitos
+# Requisitos
 - Formação em sistemas, tecnologia, computação ou áreas correlatas.
 - Experiência com Javascript, HTML e CSS.
 - Experiência com framework/bibliotecas de front-end Angular (ng1) e React.
 - Conhecimento em pré-processadores (Less/Sass).
 - Conhecimento em metodologias ágeis.
 
-## Diferenciais
+# Diferenciais
 - Inglês avançado
 - Conhecimento em NodeJs.
 - Experiência em e-commerce/clubes de assinatura
 
-## Candidatura
+# Candidatura
 - Enviar seu CV e o link do repositório no GitHub referente ao teste abaixo no email guilherme.rey@b4agroup.com.
 - Ou, enviar CV e fazer um pull-request deste mesmo repositório
 - Caso não queria deixar seu projeto público por possuir vínculo com outra empresa você pode enviar um link do BitBucket. 
 
-## Teste
+# Teste
 - Você precisará fazer uma inscrição no site: https://developer.marvel.com/ para obter uma public e private key.
 - Criar uma aplicação que mostre os personagens da Marvel, esta listagem deve ter no mínimo um thumbnail e nome do personagem.
 - Ao clicar em um personagem, deve-se mostrar maiores detalhes sobre o personagem clicado, no mínimo a descrição do mesmo e uma listagem de eventos, séries, quadrinhos ou estórias.
@@ -57,7 +57,7 @@ Estamos buscando desenvolvedor(a) front-end para integrar a equipe de TI da B4A.
   - Testes automatizados
   - Konami Code para "Avengers Assemble" (considerando antes e depois de Infinity War do Marvel Studios)
 
-## Perfil
+# Perfil
 
 A B4A é a empresa certa para você se você:
 
