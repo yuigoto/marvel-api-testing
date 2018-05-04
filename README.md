@@ -30,14 +30,14 @@ Estamos buscando desenvolvedor(a) front-end para integrar a equipe de TI da B4A.
 - Experiência em e-commerce/clubes de assinatura
 
 # Candidatura
-- Enviar seu CV e o link do repositório no GitHub referente ao teste abaixo no email guilherme.rey@b4agroup.com.
+- Enviar seu CV e o link do repositório no GitHub referente ao teste abaixo no email guilherme.rey@b4agroup.com, com o assunto: Vaga Front-end.
 - Ou, enviar CV e fazer um pull-request deste mesmo repositório
-- Caso não queria deixar seu projeto público por possuir vínculo com outra empresa você pode enviar um link do BitBucket. 
+- Caso não queria deixar seu projeto público por possuir vínculo com outra empresa você pode enviar um link de algum outro serviço, como BitBucket, por exemplo.
 
 # Teste
-- Você precisará fazer uma inscrição no site: https://developer.marvel.com/ para obter uma public e private key.
-- Criar uma aplicação que mostre os personagens da Marvel, esta listagem deve ter no mínimo um thumbnail e nome do personagem.
-- Ao clicar em um personagem, deve-se mostrar maiores detalhes sobre o personagem clicado, no mínimo a descrição do mesmo e uma listagem de eventos, séries, quadrinhos ou estórias.
+- Faça uma inscrição no site https://developer.marvel.com/, para obter uma public e private key.
+- Crie uma aplicação web que mostre os personagens da Marvel; esta listagem deve ter no mínimo um thumbnail e nome do personagem.
+- Ao clicar em um personagem, deve-se mostrar maiores detalhes sobre o personagem clicado, no mínimo a descrição do mesmo e uma listagem de eventos, séries, quadrinhos ou histórias.
 
 ### Linguagem, tecnologia e bibliotecas
 - A aplicação deve ser totalmente client-side
