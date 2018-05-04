@@ -1,4 +1,6 @@
-# marvel-api-testing
+A B4A é uma empresa que foi criada em 2017 com a aquisição das empresas Glambox e Men’s Market. Nosso objetivo é redefinir o mercado de beleza no Brasil, e se tornar a referência em inovação no universo digital de beleza & bem-estar. 
+
+Hoje, operamos duas marcas principais que são líderes em seus respectivos segmentos: a Glambox, o maior serviço de assinatura de produtos de beleza da América Latina, focado na audiência feminina, e a Men’s Market, o maior e-commerce de produtos de beleza masculinos. 
 
 
 ## Vaga
@@ -55,11 +57,23 @@ Estamos buscando desenvolvedor(a) front-end para integrar a equipe de TI da B4A.
   - Testes automatizados
   - Konami Code para "Avengers Assemble" (considerando antes e depois de Infinity War do Marvel Studios)
 
+A B4A é a empresa certa para você se você:
 
+- Está buscando crescimento pessoal e não tem medo de trabalhar duro para isso;
+- É auto-motivado e procura dar o seu melhor, sempre;
+- Gosta de desafios e não sofre com um nível saudável de pressão;
+- É comunicativo e não tem medo de falar o que pensa;
+- Não aceita nada como é, questiona tudo e sempre tenta de achar maneiras de fazer melhor;
+- Se sente motivado em fazer parte de uma equipe que quer construir uma empresa que será a líder do mercado online de beleza na América Latina!
 
+Os nossos Valores:
 
-
-
+- Comprometimento: disciplina, pró-atividade e trabalho duro são indispensáveis para alcançar resultados excelentes.
+- Trabalho em equipe: comunicação clara e trabalho em conjunto para fazer um mais um ser mais do que dois.
+- Relações de qualidade: transparência, respeito e confiança são os pilares para um ambiente descontraído e amigável.
+- Meritocracia: valorizamos quem quer crescer junto com a gente, e recompensamos de acordo com desempenho.
+- Liderança: inspiramos, orientamos e desenvolvemos pessoas para trabalhar duro na melhor execução das estratégias da empresa. 
+- Foco obsessivo no cliente: o cliente é o centro de tudo que fazemos, e é sempre colocado em 1o lugar.
 
 
 
