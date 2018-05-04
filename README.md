@@ -3,9 +3,9 @@
 
 ## Vaga
 Estamos buscando desenvolvedor(a) front-end para integrar a equipe de TI da B4A.
-Local de trabalho: Bairro Vila Olímpia - São Paulo, SP.
-Remuneração: a combinar
-Contratação: PJ.
+- Local de trabalho: Bairro Vila Olímpia - São Paulo, SP.
+- Remuneração: a combinar
+- Contratação: PJ.
 
 ## Responsabilidades
 - Desenvolvimento de Produtos atuando em:
@@ -50,9 +50,10 @@ Contratação: PJ.
   - Utilização de boas práticas utilizando arquitetura de componentes
   - Utilização de conceitos e funcionalidades recentes introduzidas no Javascript
 
-- Um plus para avaliação:
+- Plus para avaliação:
   - Paginação, busca e ordenação
   - Testes automatizados
+  - Konami Code para "Avengers Assemble" (considerando antes e depois de Infinity War do Marvel Studios)
 
 
 
