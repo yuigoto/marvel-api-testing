@@ -57,7 +57,7 @@ Estamos buscando desenvolvedor(a) front-end para integrar a equipe de TI da B4A.
 - Plus para avaliação:
   - Paginação, busca e ordenação
   - Testes automatizados
-  - Konami Code para "Avengers Assemble" (considerando antes e depois de Infinity War do Marvel Studios)
+  - Konami Code para "Avengers Assemble" (considerando antes e depois de Infinity War do Marvel Studios)
 
 # Perfil
 
