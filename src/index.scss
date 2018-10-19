@@ -1,0 +1,79 @@
+@import "scss/variables";
+@import "scss/extend";
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
+@import "node_modules/@fortawesome/fontawesome-free/scss/regular.scss";
+@import "node_modules/@fortawesome/fontawesome-free/scss/brands.scss";
+@import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: 'Rubik', sans-serif;
+  overflow-x: hidden;
+}
+
+#main {
+  background: #000;
+  width: 100%;
+  height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#loader {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+.mm-list-link {
+  color: $marvel-red;
+  transition: .3s;
+
+  &:hover {
+    color: lighten($marvel-red, 30);
+    opacity: .5;
+    text-decoration: none;
+    transform: scale(1.5, 1.5);
+  }
+}
+
+.mm-footer {
+  background: #000;
+  @extend .text-light;
+
+  & *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.mm-pagination {
+  .page-item {
+    .page-link {
+      border-color: transparentize($marvel-red, .7);
+      color: $marvel-red;
+      transition: .3s;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 .2rem transparentize($marvel-red, .8);
+    }
+
+    &:active,
+    &.active {
+      .page-link {
+        color: #fff;
+        background: $marvel-red;
+        border: 1px solid darken($marvel-red, 10);
+        box-shadow: 0 0 0 .2rem transparentize($marvel-red, .5);
+      }
+    }
+  }
+}

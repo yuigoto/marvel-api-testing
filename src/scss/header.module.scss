@@ -1,0 +1,78 @@
+@import "variables";
+@import "node_modules/bootstrap/scss/bootstrap";
+
+.mm-header__link {
+  width: 100%;
+  max-width: 480px;
+  display: block;
+
+  &.smallLink {
+    width: auto;
+    max-width: auto;
+  }
+}
+
+.mm-header__back {
+  background: url('assets/img/marvel-infinity-header.jpg');
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+
+  &:after {
+    content: "";
+    background: rgba(0, 0, 0, .75);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+  }
+}
+
+.mm-header__fore {
+  text-align: center;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 992px) {
+    padding: 6rem 6rem;
+  }
+}
+
+.mm-header {
+  color: #fff;
+  background: #000;
+  width: 100%;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  @extend .clearfix;
+
+  &.page {
+    .mm-header__fore {
+      @extend .container;
+      padding: 1rem 2rem;
+      flex-direction: row;
+      justify-content: space-between;
+
+      & > * {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
