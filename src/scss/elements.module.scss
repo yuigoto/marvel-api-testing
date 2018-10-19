@@ -38,12 +38,25 @@
   justify-content: center;
   z-index: 3;
   overflow: hidden;
-  opacity: 0;
-  transition: .3s;
+  opacity: 1;
+  transition: 1s;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
   border-radius: 50%;
+  animation: mm_async_error 1s;
+}
+
+@keyframes mm_async_error {
+  0% {
+    filter: blur(10px);
+    opacity: 0;
+  }
+
+  100% {
+    filter: blur(0);
+    opacity: 1;
+  }
 }
 
 .mm-asyncimage-img {

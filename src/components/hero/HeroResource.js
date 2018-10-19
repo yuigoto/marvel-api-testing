@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Marvel from "core/Marvel";
 import Actions from "state/Actions";
+import AsyncImage from "components/general/AsyncImage";
 
 class HeroResource extends Component {
   constructor(props) {
@@ -12,13 +13,15 @@ class HeroResource extends Component {
     this.state = {
       has_error: false,
       has_loaded: false,
-      type: null
+      type: null,
+      hero_id: null
     };
+
+    this.setTitle = this.setTitle.bind(this);
+    this.fetchHeroData = this.fetchHeroData.bind(this);
   }
 
-  componentDidMount() {
-    console.log("Mounted");
-
+  fetchHeroData() {
     const { props } = this;
 
     let url = Marvel.setResourceUrlQuery(props.resource);
@@ -27,8 +30,24 @@ class HeroResource extends Component {
     this.setState({
       has_error: false,
       has_loaded: false,
-      type: null
+      type: null,
+      hero_id: props.hero.data.id || null
     });
+
+    switch (type) {
+      case "comics":
+        props.clearComics();
+        break;
+      case "events":
+        props.clearEvents();
+        break;
+      case "series":
+        props.clearSeries();
+        break;
+      case "stories":
+        props.clearStories();
+        break;
+    }
 
     axios.get(
       url
@@ -65,8 +84,6 @@ class HeroResource extends Component {
       }
     ).catch(
       err => {
-        console.log(err);
-
         this.setState({
           type: null,
           has_error: true,
@@ -76,8 +93,45 @@ class HeroResource extends Component {
     );
   }
 
-  componentDidUpdate() {
-    console.log("Update");
+  componentDidMount() {
+    this.fetchHeroData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.resource !== this.props.resource) {
+      this.fetchHeroData();
+    }
+  }
+
+  setTitle() {
+    let type = this.props.resource;
+
+    type = Marvel.getHeroResourceType(type);
+    let title;
+
+    switch(type) {
+      case "series":
+        title = "Series";
+        break;
+      case "stories":
+        title = "Stories";
+        break;
+      case "events":
+        title = "Events";
+        break;
+      case "comics":
+        title = "Comics";
+        break;
+      default:
+        title = "Something";
+        break;
+    }
+
+    if (this.props.hero.data[type].available) {
+      title += ` (${this.props.hero.data[type].available})`;
+    }
+
+    return title;
   }
 
   render() {
@@ -85,63 +139,93 @@ class HeroResource extends Component {
 
     if (state.has_error === true) {
       return (
-        <div>
-          <h3>😭</h3>
+        <div className={"row justify-content-center"}>
+          <div className="col-12 text-center">
+            <h5 className="display-5 text-center">{this.setTitle()}</h5>
+            <h3 className={"display-6"}>
+              Ran out of API calls! <span>😭</span>
+            </h3>
+          </div>
         </div>
       );
     }
 
     if (state.has_loaded === false) {
       return (
-        <div>
-          Loaderising ...
+        <div className={"row justify-content-center"}>
+          <div className="col-12 text-center">
+            <i className="fa fa-circle-notch fa-4x fa-spin"></i><br/>Loading...
+          </div>
         </div>
       );
     }
 
     return (
-      <div>
-        <h3>Resource</h3>
+      <div className={"row"}>
+        <div className="col-12">
+          <h5 className="display-5 text-center">{this.setTitle()}</h5>
+          <p className="text-center textmuted">
+            (showing up to 10 results)
+          </p>
+        </div>
+        <div className="col-12">
+          <div className="row justify-content-center">
+            {(() => {
+              let resource;
+              switch (state.type) {
+                case "comics":
+                  resource = props.hero.comics;
 
-        {(() => {
-          let resource;
-          switch (state.type) {
-            case "comics":
-              resource = props.hero.comics;
-              break;
-            case "events":
-              resource = props.hero.events;
-              break;
-            case "series":
-              resource = props.hero.series;
-              break;
-            case "stories":
-              resource = props.hero.stories;
-              break;
-          }
+                  break;
+                case "events":
+                  resource = props.hero.events;
+                  break;
+                case "series":
+                  resource = props.hero.series;
+                  break;
+                case "stories":
+                  resource = props.hero.stories;
+                  break;
+              }
 
-          if (resource !== undefined) {
-            return resource.children.map((item, index) => {
-              return (
-                <div key={index}>
-                  <h5>{item.title}</h5>
-                </div>
-              );
-            });
-          } else {
-            console.log("NÃO DEFINIDO");
-          }
-        })()}
+              if (resource !== undefined) {
+                if (resource.children.length < 1) {
+                  return (
+                    <div className="col-12 py-4">
+                      <h3 className="text-center text-muted even-more display-5">
+                        Nothing here! <span>😩</span>
+                      </h3>
+                    </div>
+                  );
+                }
 
-        <p>🎮 🎮 🎮</p>
+                return resource.children.map((item, index) => {
+                  return (
+                    <div className={"col-6 col-md-4 col-lg-3 py-3"} key={index}>
+                      {(() => {
+                        if (item.thumbnail === null) {
+                          return (null);
+                        }
 
-        <button onClick={(() => {
-          this.setState({
-            has_error: true
-          });
-        })}>
-          🍬
-        </button>
+                        return (
+                          <div className={"w-75 mx-auto mb-2"}>
+                            <AsyncImage source={item.thumbnail.path + "." + item.thumbnail.extension}/>
+                          </div>
+                        );
+                      })()}
+                      <h5 className={"text-center"}>
+                        {item.title}
+                      </h5>
+                    </div>
+                  );
+                });
+              } else {
+                console.log("NÃO DEFINIDO");
+              }
+            })()}
+          </div>
+
+        </div>
       </div>
     );
   }
@@ -167,17 +251,45 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  clearComics: () => {
+    dispatch(Actions.hero.clearHeroComics());
+  },
+  clearSeries: () => {
+    dispatch(Actions.hero.clearHeroSeries());
+  },
+  clearEvents: () => {
+    dispatch(Actions.hero.clearHeroEvents());
+  },
+  clearStories: () => {
+    dispatch(Actions.hero.clearHeroStories());
+  },
   setComics: (comics) => {
-    dispatch(Actions.hero.setHeroComics(comics));
+    if (comics.children.length < 1) {
+      dispatch(Actions.hero.clearHeroComics());
+    } else {
+      dispatch(Actions.hero.setHeroComics(comics));
+    }
   },
   setSeries: (series) => {
-    dispatch(Actions.hero.setHeroSeries(series));
+    if (series.children.length < 1) {
+      dispatch(Actions.hero.clearHeroSeries());
+    } else {
+      dispatch(Actions.hero.setHeroSeries(series));
+    }
   },
   setEvents: (events) => {
-    dispatch(Actions.hero.setHeroEvents(events));
+    if (events.children.length < 1) {
+      dispatch(Actions.hero.clearHeroEvents());
+    } else {
+      dispatch(Actions.hero.setHeroEvents(events));
+    }
   },
   setStories: (stories) => {
-    dispatch(Actions.hero.setHeroStories(stories));
+    if (stories.children.length < 1) {
+      dispatch(Actions.hero.clearHeroStories());
+    } else {
+      dispatch(Actions.hero.setHeroStories(stories));
+    }
   }
 });
 

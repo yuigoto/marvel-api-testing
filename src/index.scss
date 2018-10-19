@@ -77,3 +77,15 @@ body {
     }
   }
 }
+
+.mm-wiki-link {
+  color: $marvel-red;
+  transition: .3s;
+
+  &:hover {
+    color: lighten($marvel-red, 30);
+    opacity: .5;
+    text-decoration: none;
+    transform: scale(1.5, 1.5);
+  }
+}

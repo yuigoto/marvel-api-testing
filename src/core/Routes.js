@@ -10,6 +10,7 @@
 // Import Views
 import Search from "views/Search";
 import Home from "views/Home";
+import Hero from "views/Hero";
 
 // Export the routes
 export default [
@@ -37,5 +38,15 @@ export default [
     path: "/search/:term/page/:page(\\d+)",
     exact: true,
     component: Search
+  },
+  {
+    path: "/hero",
+    exact: true,
+    component: Hero
+  },
+  {
+    path: "/hero/:hero_id(\\d+)",
+    exact: true,
+    component: Hero
   }
 ];
