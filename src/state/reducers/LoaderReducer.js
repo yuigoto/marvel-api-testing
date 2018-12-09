@@ -1,7 +1,7 @@
 import { Loader } from "state/Types";
 
-/***
- * State/Reducers/LoadReducer
+/**
+ * State/Reducers/LoaderReducer
  * ----------------------------------------------------------------------
  * @author    Fabio Y. Goto <lab@yuiti.com.br>
  * @since     0.0.1
@@ -11,17 +11,19 @@ import { Loader } from "state/Types";
  * @returns {*}
  * @constructor
  */
-export function LoaderReducer(state = {}, action) {
+const LoaderReducer = (state = {}, action) => {
   switch (action.type) {
-    case Loader.HIDE_LOADER:
+    case Loader.HIDE:
       return Object.assign({}, state, {
         visible: false
       });
-    case Loader.SHOW_LOADER:
+    case Loader.SHOW:
       return Object.assign({}, state, {
         visible: true
       });
     default:
       return state;
   }
-}
+};
+
+export default LoaderReducer;

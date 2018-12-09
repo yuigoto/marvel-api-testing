@@ -8,22 +8,28 @@ import { Loader } from "state/Types";
  */
 const LoaderActions = {};
 
-LoaderActions.hideLoader = () => {
+/**
+ * @returns {{loader: {visible: boolean}, type: string}}
+ */
+LoaderActions.hide = () => {
   return {
     loader: {
-      visible: false,
+      visible: false
     },
-    type: Loader.HIDE_LOADER
-  };
+    type: Loader.HIDE
+  }
 };
 
-LoaderActions.showLoader = () => {
+/**
+ * @returns {{loader: {visible: boolean}, type: string}}
+ */
+LoaderActions.show = () => {
   return {
     loader: {
-      visible: true,
+      visible: true
     },
-    type: Loader.SHOW_LOADER
-  };
+    type: Loader.SHOW
+  }
 };
 
 export default LoaderActions;

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import Actions from "state/Actions";
-import HeroResource from "components/hero/HeroResource";
-import AsyncImage from "components/general/AsyncImage";
-import Marvel from "core/Marvel";
+import Actions from "review/state/Actions";
+import HeroResource from "review/components/hero/HeroResource";
+import AsyncImage from "review/components/general/AsyncImage";
+import Marvel from "review/core/Marvel";
 import axios from "axios";
-import TestHero from "assets/data/TestHero.json";
+import TestHero from "review/assets/data/TestHero.json";
 
 class HeroProfile extends Component {
   constructor(props) {

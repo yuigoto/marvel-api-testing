@@ -1,4 +1,10 @@
-@import "variables";
+/**
+ * SCSS/Header.Module
+ * ----------------------------------------------------------------------
+ * @author    Fabio Y. Goto <lab@yuiti.com.br>
+ * @since     0.0.1
+ */
+@import "partials/variables";
 @import "node_modules/bootstrap/scss/bootstrap";
 
 .mm-header__link {
@@ -6,14 +12,14 @@
   max-width: 480px;
   display: block;
 
-  &.smallLink {
+  &.small {
     width: auto;
     max-width: auto;
   }
 }
 
 .mm-header__back {
-  background: url('assets/img/marvel-infinity-header.jpg');
+  background: url('../assets/img/marvel-infinity-header.jpg');
   background-position: center center;
   background-size: cover;
   position: absolute;

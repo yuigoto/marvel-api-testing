@@ -1,0 +1,115 @@
+/**
+ * SCSS/Logo
+ * ----------------------------------------------------------------------
+ * @author    Fabio Y. Goto <lab@yuiti.com.br>
+ * @since     0.0.1
+ */
+@import "partials/variables";
+
+.marvel-logo-wrap {
+  fill: $marvel-red;
+}
+
+.marvel-logo-text {
+  fill: #fff;
+  fill-rule: nonzero;
+}
+
+.marvel-logo {
+  width: 100%;
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  stroke-linejoin: round;
+  stroke-miterlimit: 1.41421;
+
+  &.inline {
+    margin-bottom: 0;
+    display: inline-block;
+  }
+
+  &.mini {
+    max-width: 8rem;
+  }
+
+  &.hero {
+    max-width: 480px;
+  }
+
+  &.animated {
+    animation-fill-mode: forwards !important;
+    animation-iteration-count: 1 !important;
+    animation: marvel-logo-anim 2s linear alternate;
+    animation-delay: 3s;
+
+    .marvel-logo-wrap,
+    .marvel-logo-text {
+      stroke-width: 4;
+      stroke-location: inside;
+      fill: transparent;
+      animation-fill-mode: forwards !important;
+      animation-iteration-count: 1 !important;
+    }
+
+    .marvel-logo-wrap {
+      stroke: $marvel-red;
+      stroke-dasharray: 3000;
+      stroke-dashoffset: 3000;
+      animation: marvel-logo-bg-anim 2s linear alternate;
+    }
+
+    .marvel-logo-text {
+      stroke: #fff;
+      stroke-dasharray: 8000;
+      stroke-dashoffset: 8000;
+      animation: marvel-logo-fg-anim 2s linear alternate;
+      animation-delay: 2s;
+    }
+  }
+}
+
+@keyframes marvel-logo-bg-anim {
+  25% {
+    fill: transparent;
+    stroke-dashoffset: 2000;
+  }
+
+  50% {
+    fill: transparent;
+    stroke-dashoffset: 1000;
+  }
+
+  75% {
+    fill: transparent;
+    stroke-width: 4;
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    fill: $marvel-red;
+    stroke-width: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes marvel-logo-fg-anim {
+  75% {
+    stroke-width: 4;
+    fill: transparent;
+  }
+
+  100% {
+    fill: #fff;
+    stroke-width: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes marvel-logo-anim {
+  75% {
+    box-shadow: none;
+  }
+
+  100% {
+    box-shadow: 0 0 2rem 0 rgba(0, 0, 0, .25);
+  }
+}

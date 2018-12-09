@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-import { ReactComponent as SVGLogo } from "assets/svg/MarvelLogo.svg";
+import { ReactComponent as SVGLogo } from "review/assets/svg/MarvelLogo.svg";
 
 const Logo = ({is_animated, inline, mini, hero, className}) => {
   let _cls = {

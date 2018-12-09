@@ -11,54 +11,71 @@ const HeroActions = {};
 /**
  * @returns {{type: string}}
  */
-HeroActions.clearHero = () => {
+HeroActions.clear = () => {
   return {
-    type: Hero.CLEAR_HERO
+    type: Hero.CLEAR
   }
 };
 
 /**
  * @returns {{type: string}}
  */
-HeroActions.clearHeroComics = () => {
+HeroActions.clearComics = () => {
   return {
-    type: Hero.CLEAR_HERO_COMICS
+    type: Hero.CLEAR_COMICS
   }
 };
 
 /**
  * @returns {{type: string}}
  */
-HeroActions.clearHeroEvents = () => {
+HeroActions.clearEvents = () => {
   return {
-    type: Hero.CLEAR_HERO_EVENTS
+    type: Hero.CLEAR_EVENTS
   }
 };
 
 /**
  * @returns {{type: string}}
  */
-HeroActions.clearHeroSeries = () => {
+HeroActions.clearSeries = () => {
   return {
-    type: Hero.CLEAR_HERO_SERIES
+    type: Hero.CLEAR_SERIES
   }
 };
 
 /**
  * @returns {{type: string}}
  */
-HeroActions.clearHeroStories = () => {
+HeroActions.clearStories = () => {
   return {
-    type: Hero.CLEAR_HERO_STORIES
+    type: Hero.CLEAR_STORIES
   }
 };
 
 /**
- * @returns {{type: string}}
+ * @param load
+ * @returns {{hero: {load: *}, type: string}}
  */
-HeroActions.resetHero = () => {
+HeroActions.load = (load) => {
   return {
-    type: Hero.RESET_HERO
+    hero: {
+      load: load
+    },
+    type: Hero.LOAD
+  }
+};
+
+/**
+ * @param has_loaded
+ * @returns {{hero: {has_loaded: *}, type: string}}
+ */
+HeroActions.loadStatus = (has_loaded) => {
+  return {
+    hero: {
+      has_loaded: has_loaded
+    },
+    type: Hero.LOAD_STATUS
   }
 };
 
@@ -66,12 +83,12 @@ HeroActions.resetHero = () => {
  * @param hero
  * @returns {{hero: {data: *}, type: string}}
  */
-HeroActions.setHero = (hero) => {
+HeroActions.set = (hero) => {
   return {
     hero: {
       data: hero
     },
-    type: Hero.SET_HERO
+    type: Hero.SET
   }
 };
 
@@ -79,52 +96,52 @@ HeroActions.setHero = (hero) => {
  * @param comics
  * @returns {{hero: {comics: *}, type: string}}
  */
-HeroActions.setHeroComics = (comics) => {
+HeroActions.setComics = (comics) => {
   return {
     hero: {
       comics
     },
-    type: Hero.SET_HERO_COMICS
-  };
+    type: Hero.SET_COMICS
+  }
 };
 
 /**
  * @param events
  * @returns {{hero: {events: *}, type: string}}
  */
-HeroActions.setHeroEvents = (events) => {
+HeroActions.setEvents = (events) => {
   return {
     hero: {
       events
     },
-    type: Hero.SET_HERO_EVENTS
-  };
+    type: Hero.SET_EVENTS
+  }
 };
 
 /**
  * @param series
  * @returns {{hero: {series: *}, type: string}}
  */
-HeroActions.setHeroSeries = (series) => {
+HeroActions.setSeries = (series) => {
   return {
     hero: {
       series
     },
-    type: Hero.SET_HERO_SERIES
-  };
+    type: Hero.SET_SERIES
+  }
 };
 
 /**
  * @param stories
  * @returns {{hero: {stories: *}, type: string}}
  */
-HeroActions.setHeroStories = (stories) => {
+HeroActions.setStories = (stories) => {
   return {
     hero: {
       stories
     },
-    type: Hero.SET_HERO_STORIES
-  };
+    type: Hero.SET_STORIES
+  }
 };
 
 export default HeroActions;

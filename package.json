@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.4.1",
+    "@yuigoto/async-image": "^1.0.0",
     "@yuigoto/ctrl": "^0.1.1",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.3",

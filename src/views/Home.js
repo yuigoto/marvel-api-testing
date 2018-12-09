@@ -1,52 +1,72 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-
-import SearchBox from "components/general/SearchBox";
 import Actions from "state/Actions";
+import connect from "react-redux/es/connect/connect";
+import SearchBar from "components/search/SearchBar";
 
 class Home extends Component {
+  /**
+   * @param {*} props
+   */
   constructor(props) {
     super(props);
-    this.state = {
-      triggered: false
-    };
 
-    this.goGoSearch = this.goGoSearch.bind(this);
+    this.searchCallable = this.searchCallable.bind(this);
   }
 
-  goGoSearch() {
-    this.props.history.push("/search");
+  // Methods
+  // --------------------------------------------------------------------
+
+  searchCallable(term) {
+    const { props } = this;
+    const { history } = props;
+
+    if (history && history !== undefined) {
+      let path = "/search";
+
+      props.searchTrigger();
+      props.clearChildren(false);
+      props.searchLoad(false);
+      props.searchStatus(false);
+
+      if (term !== "") {
+        path += "/" + term;
+      }
+
+      history.push(path);
+    }
   }
 
-  componentDidMount() {
-    this.props.loaderHide();
-    this.props.searchReset();
-    this.props.searchTrigger();
-  }
+  // React Lifecycle
+  // --------------------------------------------------------------------
 
   render() {
     return (
-      <SearchBox callable={this.goGoSearch}/>
+      <SearchBar callable={this.searchCallable}/>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    search: state.search
-  };
-};
+const mapStateToProps = (state) => ({
+  hero: state.hero,
+  loader: state.loader,
+  search: state.search
+});
 
 const mapDispatchToProps = (dispatch) => ({
-  loaderHide: () => {
-    dispatch(Actions.loader.hideLoader());
+  clearChildren: () => {
+    dispatch(Actions.search.clearHeroes());
   },
-  searchReset: () => {
-    dispatch(Actions.search.searchClear())
+  searchLoad: (load) => {
+    dispatch(Actions.search.load(load));
   },
   searchTrigger: () => {
-    dispatch(Actions.search.trigger())
+    dispatch(Actions.search.trigger());
+  },
+  searchUntrigger: () => {
+    dispatch(Actions.search.untrigger());
+  },
+  searchStatus: (status) => {
+    dispatch(Actions.search.loadStatus(status));
   }
 });
 

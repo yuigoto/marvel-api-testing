@@ -6,7 +6,7 @@
  */
 export default {
   characters: {
-    base: "/characters",
+    base: "characters",
     filters: {
       comics: "/comics",
       events: "/events",
@@ -15,7 +15,7 @@ export default {
     }
   },
   comics: {
-    base: "/comics",
+    base: "comics",
     filters: {
       characters: "/characters",
       creators: "/creators",
@@ -24,7 +24,7 @@ export default {
     }
   },
   creators: {
-    base: "/creators",
+    base: "creators",
     filters: {
       comics: "/comics",
       events: "/events",
@@ -33,7 +33,7 @@ export default {
     }
   },
   events: {
-    base: "/events",
+    base: "events",
     filters: {
       characters: "/characters",
       comics: "/comics",
@@ -43,7 +43,7 @@ export default {
     }
   },
   series: {
-    base: "/series",
+    base: "series",
     filters: {
       characters: "/characters",
       comics: "/comics",
@@ -53,7 +53,7 @@ export default {
     }
   },
   stories: {
-    base: "/stories",
+    base: "stories",
     filters: {
       characters: "/characters",
       comics: "/comics",
@@ -62,4 +62,4 @@ export default {
       series: "/series"
     }
   }
-};
+}

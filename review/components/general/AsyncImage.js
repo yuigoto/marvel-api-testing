@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import classnames from "classnames";
 
-import elements_module from "scss/elements.module.scss";
+import elements_module from "review/scss/elements.module.scss";
 
 /**
  * Components/General/AsyncImage
@@ -22,16 +22,18 @@ class AsyncImage extends Component {
     };
   }
 
-  componentDidMount() {
-    axios.get(
-      this.props.source,
-      {
-        responseType: "arraybuffer"
-      }
-    ).then(
-      res => {
-        let buffer = new Buffer(res.data, "binary").toString("base64");
-        let mime = res.headers["content-type"];
+  async fetchImageData() {
+    try {
+      let fetch = await axios.get(
+        this.props.source,
+        {
+          responseType: "arraybuffer"
+        }
+      );
+
+      if (fetch && fetch.data) {
+        let buffer = new Buffer(fetch.data, "binary").toString("base64");
+        let mime = fetch.headers["content-type"];
         let data = `data:${mime};base64,${buffer}`;
 
         this.setState({
@@ -39,15 +41,13 @@ class AsyncImage extends Component {
           source: data
         });
       }
-    ).catch(
-      err => {
-        this.setState({
-          has_loaded: true,
-          has_error: true
-        });
-        console.error(err);
-      }
-    );
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  componentDidMount() {
+    this.fetchImageData();
   }
 
   componentDidUpdate(prevProps, prevState) {

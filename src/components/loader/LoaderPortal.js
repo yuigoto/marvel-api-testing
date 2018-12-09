@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import ReactDOM from "react-dom";
 
 const parent = document.getElementById("main");
 
 /**
- * Components/Loader/LoaderPortal
+ * Components/Base/LoaderPortal
  * ----------------------------------------------------------------------
  * @author    Fabio Y. Goto <lab@yuiti.com.br>
  * @since     0.0.1

@@ -1,100 +1,32 @@
-@import "variables";
+/**
+ * SCSS/Elements.Module
+ * ----------------------------------------------------------------------
+ * @author    Fabio Y. Goto <lab@yuiti.com.br>
+ * @since     0.0.1
+ */
+@import "partials/variables";
+@import "node_modules/bootstrap/scss/bootstrap";
 
-.mm-asyncimage-spin {
-  color: #fff;
-  background: rgba(0, 0, 0, 0.5);
-  width: 0;
-  height: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  overflow: hidden;
-  opacity: 0;
-  transition: .3s;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 50%;
+.mm-pagination {
+  .page-item {
+    .page-link {
+      border-color: transparentize($marvel-red, .7);
+      color: $marvel-red;
+      transition: .3s;
+    }
 
-  &.visible {
-    width: 100%;
-    height: 100%;
-    opacity: 1;
-    top: 0;
-    left: 0;
-  }
-}
+    &:focus {
+      box-shadow: 0 0 0 .2rem transparentize($marvel-red, .8);
+    }
 
-.mm-asyncimage-error {
-  color: #f00;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  overflow: hidden;
-  opacity: 1;
-  transition: 1s;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
-  animation: mm_async_error 1s;
-}
-
-@keyframes mm_async_error {
-  0% {
-    filter: blur(10px);
-    opacity: 0;
-  }
-
-  100% {
-    filter: blur(0);
-    opacity: 1;
-  }
-}
-
-.mm-asyncimage-img {
-  width: 140%;
-  margin: auto;
-  position: absolute;
-  top: -1000%;
-  right: -1000%;
-  bottom: -1000%;
-  left: -1000%;
-  transition: 1s;
-  animation: mm_async_fadein 1s;
-}
-
-@keyframes mm_async_fadein {
-  0% {
-    filter: blur(10px);
-    opacity: 0;
-  }
-
-  100% {
-    filter: blur(0);
-    opacity: 1;
-  }
-}
-
-.mm-asyncimage {
-  width: 100%;
-  padding: 0 0 100%;
-  display: block;
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
-  box-shadow: 0 .2rem .5rem 0 rgba(0, 0, 0, .25);
-
-  &:hover {
-    .mm-asyncimage-img {
-      transform: scale(1.15, 1.15);
+    &:active,
+    &.active {
+      .page-link {
+        color: #fff;
+        background: $marvel-red;
+        border: 1px solid darken($marvel-red, 10);
+        box-shadow: 0 0 0 .2rem transparentize($marvel-red, .5);
+      }
     }
   }
 }

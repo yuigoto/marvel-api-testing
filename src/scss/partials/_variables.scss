@@ -1,0 +1,56 @@
+/**
+ * SCSS/Partials/Variables
+ * ----------------------------------------------------------------------
+ * @author    Fabio Y. Goto <lab@yuiti.com.br>
+ * @since     0.0.1
+ */
+
+// Paths
+// ----------------------------------------------------------------------
+$fa-font-path:  "../node_modules/@fortawesome/fontawesome-free/webfonts";
+
+// Colors
+// ----------------------------------------------------------------------
+$marvel-red: #ed1d24;
+
+// Social Network Colors
+// ----------------------------------------------------------------------
+$color-sn: #666;
+$color-sn-whatsapp: #25d366;
+$color-sn-tumblr : #35465c;
+$color-sn-blogger: #f57d00;
+$color-sn-facebook: #3b5998;
+$color-sn-instagram: #833ab4;
+$color-sn-linkedin: #0077b5;
+$color-sn-googleplus: #dd4b39;
+$color-sn-pinterest: #bd081c;
+$color-sn-twitter: #1da1f2;
+$color-sn-youtube: #ff0000;
+$color-sn-github: #c9510c;
+$color-sn-bitbucket: #205081;
+$color-sn-gitlab: #fca326;
+$color-sn-soundcloud: #ff8800;
+$color-sn-reddit: #5f99cf;
+$color-sn-flickr: #ff0084;
+$color-sn-vk: #45668e;
+
+$sn-colors: () !default;
+$sn-colors: map-merge((
+    "whatsapp": $color-sn-whatsapp,
+    "tumblr": $color-sn-tumblr,
+    "blogger": $color-sn-blogger,
+    "facebook": $color-sn-facebook,
+    "instagram": $color-sn-instagram,
+    "linkedin": $color-sn-linkedin,
+    "googleplus": $color-sn-googleplus,
+    "pinterest": $color-sn-pinterest,
+    "twitter": $color-sn-twitter,
+    "youtube": $color-sn-youtube,
+    "github": $color-sn-github,
+    "bitbucket": $color-sn-bitbucket,
+    "gitlab": $color-sn-gitlab,
+    "soundcloud": $color-sn-soundcloud,
+    "reddit": $color-sn-reddit,
+    "flickr": $color-sn-flickr,
+    "vk": $color-sn-vk
+), $sn-colors);

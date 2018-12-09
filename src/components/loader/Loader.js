@@ -6,7 +6,7 @@ import LoaderPortal from "components/loader/LoaderPortal";
 import loader_module from "scss/loader.module.scss";
 
 /**
- * Components/Loader/Loader
+ * Components/Base/Loader
  * ----------------------------------------------------------------------
  * @author    Fabio Y. Goto <lab@yuiti.com.br>
  * @since     0.0.1

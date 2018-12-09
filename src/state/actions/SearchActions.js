@@ -1,4 +1,5 @@
 import { Search } from "state/Types";
+import InitialState from "state/InitialState";
 
 /**
  * State/Actions/SearchActions
@@ -8,66 +9,121 @@ import { Search } from "state/Types";
  */
 const SearchActions = {};
 
-SearchActions.searchClear = () => {
+/**
+ * @returns {{search: {term: string, orderBy: string, orderByDesc: boolean, children: Array, total: null, per_page: number, page: number, has_loaded: boolean, triggered: boolean}, type: string}}
+ */
+SearchActions.clear = () => {
   return {
-    search: {
-      term: "",
-      orderBy: "name",
-      orderByDesc: false,
-      children: [],
-      total: null,
-      per_page: 12,
-      current_page: 1
-    },
-    type: Search.SEARCH_CLEAR
-  }
+    search: InitialState.search(),
+    type: Search.CLEAR
+  };
 };
 
-SearchActions.searchClearHeroes = () => {
+/**
+ * @returns {{search: {children: Array}, type: string}}
+ */
+SearchActions.clearHeroes = () => {
   return {
     search: {
       children: []
     },
-    type: Search.SEARCH_HEROES_CLEAR
+    type: Search.CLEAR_HEROES
   };
 };
 
-SearchActions.searchLoadHeroes = (heroes) => {
+/**
+ * @param load
+ * @returns {{search: {load: *}, type: string}}
+ */
+SearchActions.load = (load) => {
   return {
     search: {
-      children: heroes
+      load
     },
-    type: Search.SEARCH_HEROES_CLEAR
-  }
+    type: Search.LOAD
+  };
 };
 
-SearchActions.setOrder = (order) => {
+/**
+ * @param load_status
+ * @returns {{search: {load_status: *}, type: string}}
+ */
+SearchActions.loadStatus = (load_status) => {
   return {
     search: {
-      order: order
+      load_status
+    },
+    type: Search.LOAD_STATUS
+  };
+};
+
+/**
+ * @param search
+ * @returns {{search: *, type: string}}
+ */
+SearchActions.set = (search) => {
+  return {
+    search,
+    type: Search.SET
+  };
+};
+
+/**
+ * @param error
+ * @returns {{search: {error: *}, type: string}}
+ */
+SearchActions.setError = (error) => {
+  return {
+    search: {
+      error
     },
     type: Search.SET_ORDER
   };
 };
 
-SearchActions.setOrderByDesc = (orderByDesc) => {
+/**
+ * @param order
+ * @returns {{search: {order: *}, type: string}}
+ */
+SearchActions.setOrder = (order) => {
   return {
     search: {
-      orderByDesc: orderByDesc
+      order
     },
-    type: Search.SET_ORDER_BY_DESC
+    type: Search.SET_ORDER
   };
 };
 
+/**
+ * @param orderByDesc
+ * @returns {{search: {orderByDesc: *}, type: string}}
+ */
+SearchActions.setOrderDirection = (orderByDesc) => {
+  return {
+    search: {
+      orderByDesc
+    },
+    type: Search.SET_ORDER_DIRECTION
+  };
+};
+
+/**
+ * @param page
+ * @returns {{search: {page: *}, type: string}}
+ */
 SearchActions.setPage = (page) => {
   return {
     search: {
-      current_page: page
+      page
     },
     type: Search.SET_PAGE
   };
 };
 
+/**
+ * @param results
+ * @returns {{search: {per_page: *}, type: string}}
+ */
 SearchActions.setResults = (results) => {
   return {
     search: {
@@ -77,45 +133,46 @@ SearchActions.setResults = (results) => {
   };
 };
 
-SearchActions.setSearch = (search) => {
-  return {
-    search,
-    type: Search.SET_SEARCH
-  };
-};
-
+/**
+ * @param term
+ * @returns {{search: {term: *}, type: string}}
+ */
 SearchActions.setTerm = (term) => {
   return {
     search: {
-      term: term
+      term
     },
     type: Search.SET_TERM
   };
 };
 
+/**
+ * @param total
+ * @returns {{search: {total: *}, type: string}}
+ */
 SearchActions.setTotal = (total) => {
   return {
     search: {
-      total: total
+      total
     },
     type: Search.SET_TOTAL
   };
 };
 
+/**
+ * @returns {{type: string}}
+ */
 SearchActions.trigger = () => {
   return {
-    search: {
-      triggered: true
-    },
     type: Search.TRIGGER
   };
 };
 
+/**
+ * @returns {{type: string}}
+ */
 SearchActions.untrigger = () => {
   return {
-    search: {
-      triggered: false
-    },
     type: Search.UNTRIGGER
   };
 };

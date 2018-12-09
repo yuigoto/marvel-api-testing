@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Marvel from "core/Marvel";
-import Actions from "state/Actions";
-import AsyncImage from "components/general/AsyncImage";
+import Marvel from "review/core/Marvel";
+import Actions from "review/state/Actions";
+import AsyncImage from "review/components/general/AsyncImage";
 
 class HeroResource extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ class HeroResource extends Component {
       case "series":
         props.clearSeries();
         break;
-      case "stories":
+      default:
         props.clearStories();
         break;
     }
@@ -71,7 +71,7 @@ class HeroResource extends Component {
           case "series":
             props.setSeries(resource);
             break;
-          case "stories":
+          default:
             props.setStories(resource);
             break;
         }
@@ -119,11 +119,8 @@ class HeroResource extends Component {
       case "events":
         title = "Events";
         break;
-      case "comics":
-        title = "Comics";
-        break;
       default:
-        title = "Something";
+        title = "Comics";
         break;
     }
 
@@ -143,7 +140,7 @@ class HeroResource extends Component {
           <div className="col-12 text-center">
             <h5 className="display-5 text-center">{this.setTitle()}</h5>
             <h3 className={"display-6"}>
-              Ran out of API calls! <span>😭</span>
+              Ran out of API calls! <span role={"img"} aria-label={"Crying"}>😭</span>
             </h3>
           </div>
         </div>
@@ -183,7 +180,7 @@ class HeroResource extends Component {
                 case "series":
                   resource = props.hero.series;
                   break;
-                case "stories":
+                default:
                   resource = props.hero.stories;
                   break;
               }
@@ -193,7 +190,7 @@ class HeroResource extends Component {
                   return (
                     <div className="col-12 py-4">
                       <h3 className="text-center text-muted even-more display-5">
-                        Nothing here! <span>😩</span>
+                        Nothing here! <span role={"img"} aria-label={"Crying"}>😭</span>
                       </h3>
                     </div>
                   );
@@ -220,7 +217,7 @@ class HeroResource extends Component {
                   );
                 });
               } else {
-                console.log("NÃO DEFINIDO");
+                // NÃO DEFINIDO
               }
             })()}
           </div>

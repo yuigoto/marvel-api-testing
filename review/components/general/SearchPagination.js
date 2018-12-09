@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { NavLink } from "react-router-dom";
 
-import Actions from "state/Actions";
-
 /***
  * Components/General/SearchReducer
  * ----------------------------------------------------------------------
@@ -47,8 +45,6 @@ class SearchPagination extends Component {
     }
 
     list = [];
-
-
 
     for (let i = min; i <= max; i++) {
       let active = (page === i);

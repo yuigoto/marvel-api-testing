@@ -1,4 +1,10 @@
-@import "variables";
+/**
+ * SCSS/Search.Module
+ * ----------------------------------------------------------------------
+ * @author    Fabio Y. Goto <lab@yuiti.com.br>
+ * @since     0.0.1
+ */
+@import "partials/variables";
 
 .mm-search__input {
   background: transparentize($marvel-red, .90);

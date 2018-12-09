@@ -1,103 +1,141 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import axios from "axios";
-
+import SearchBar from "components/search/SearchBar";
 import Actions from "state/Actions";
+import connect from "react-redux/es/connect/connect";
 import Marvel from "core/Marvel";
-import AsyncImage from "components/general/AsyncImage";
-import SearchBox from "components/general/SearchBox";
-import SearchPagination from "components/general/SearchPagination";
-import TestCollection from "assets/data/TestCollection";
+import InitialState from "state/InitialState";
+import { AsyncImage } from "@yuigoto/async-image";
+import Paginator from "components/base/Paginator";
+import { Link } from "react-router-dom";
 
 class Search extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      has_loaded: false,
-      term: this.props.match.params.term,
-      page: 1
-    };
 
     this.displaySearchResults = this.displaySearchResults.bind(this);
-    this.goGoSearch = this.goGoSearch.bind(this);
-    this.fetchDataFromEndpoint = this.fetchDataFromEndpoint.bind(this);
-    this.searchNavigationCallable = this.searchNavigationCallable.bind(this);
-    this.loadHero = this.loadHero.bind(this);
+    this.displaySearchTitle = this.displaySearchTitle.bind(this);
+    this.loadHeroes = this.loadHeroes.bind(this);
+    this.searchCallable = this.searchCallable.bind(this);
   }
 
-  goGoSearch() {
-    let history = (this.props.search.term !== "")
-      ? "/search/" + this.props.search.term : "/search";
-    this.props.history.push(history);
+  // Methods
+  // --------------------------------------------------------------------
 
-    this.props.loaderShow();
-    this.props.searchTrigger();
+  searchCallable(term) {
+    const { props } = this;
+    const { history } = props;
+
+    if (history && history !== undefined) {
+      let path = "/search";
+
+      props.searchTrigger();
+      props.clearChildren(false);
+      props.searchLoad(false);
+      props.searchStatus(false);
+
+      if (term !== "") {
+        path += "/" + term;
+      }
+
+      history.push(path);
+    }
   }
 
-  searchNavigationCallable() {
-    this.props.loaderShow();
-    this.props.searchTrigger();
+  loadHeroes() {
+    const { props } = this;
+
+    let url = Marvel.setSearchQuery(
+      10,
+      props.match.params.page || 1,
+      props.search.term || props.match.params.term || "",
+      props.search.prderBy,
+      props.search.orderByDesc
+    );
+
+    let get = Marvel.fetchFromUrlOrPath(url);
+
+    props.clearChildren();
+    props.searchLoad(true);
+    props.searchStatus(false);
+    props.loaderShow();
+    props.searchError(false);
+
+    get
+      .then(res => {
+        let search = InitialState.search();
+        search.term = props.match.params.term;
+        search.children = res.data.data.results;
+        search.page = props.match.params.page || 1;
+        search.total = res.data.data.total;
+
+        props.searchSet(search);
+        props.searchLoad(false);
+        props.searchStatus(true);
+        props.searchUntrigger();
+        props.loaderHide();
+      })
+      .catch(err => {
+        console.log(
+          "Error loading your request"
+        );
+
+        props.searchLoad(false);
+        props.searchError(true);
+        props.searchStatus(false);
+        props.searchUntrigger();
+        props.loaderHide();
+      });
   }
 
-  loadHero(hero_id) {
-    return () => {
-      this.props.loaderShow();
+  displaySearchTitle() {
+    const { props } = this;
 
-      let url = Marvel.singleHeroQuery(hero_id);
-
-      this.props.clearHero();
-      this.props.clearComics();
-      this.props.clearEvents();
-      this.props.clearSeries();
-      this.props.clearStories();
-
-      axios
-        .get(
-          url,
-          {},
-          {
-            headers: {
-              "Content-type": "application/json"
-            }
-          }
-        ).then(
-        res => {
-          const { data } = res.data;
-
-          this.props.heroSet(data.results[0]);
-          this.props.loaderHide();
-          this.props.history.push("/hero/" + hero_id);
-        }
-      ).catch(
-        err => {
-          this.props.loaderHide();
-        }
-      );
-    };
+    if (props.search.children.length > 0) {
+      if (props.search.term !== "" && props.search.term !== undefined) {
+        return (
+          <h4 className={"display-4 text-center mb-5"}>
+            Displaying results for <strong><em>{props.search.term}</em></strong>
+          </h4>
+        );
+      } else {
+        return (
+          <div className={"mb-5"}>
+            <h4 className={"display-4 text-center"}>
+              Just displaying search results
+            </h4>
+            <p className="text-center text-muted even-more font-weight-bold">
+              (Could not decide on a search term, huh?)
+            </p>
+          </div>
+        );
+      }
+    }
   }
 
   displaySearchResults() {
     const { search } = this.props;
 
     if (search.children.length > 0) {
-      return (
-        search.children.map((item, index) => {
-          return (
-            <div className={"col-12 col-sm-6 col-md-4 mb-4"} key={index + Date.now()}>
-              <Link
-                to={"/hero/" + item.id}
-                className={"mm-list-link"}
-                onClick={this.loadHero(item.id)}>
-                <div className="w-50 m-auto">
-                  <AsyncImage id={item.id + Date.now()} source={item.thumbnail.path + "." + item.thumbnail.extension}/>
-                </div>
-                <h4 className={"text-center py-2"}>{item.name}</h4>
-              </Link>
-            </div>
-          );
-        })
-      );
+      return search.children.map((item, index) => {
+        return (
+          <div className={"col-12 col-sm-6 col-md-4 mb-4"} key={index + Date.now()}>
+            <Link
+              to={"/hero/" + item.id}
+              className={"mm-list-link"}>
+              <div className="w-50 m-auto">
+                <AsyncImage
+                  id={item.id + Date.now()}
+                  src={item.thumbnail.path + "." + item.thumbnail.extension}
+                  className={"async-image"}
+                  imageClass={"async-image-item"}
+                  loaderClass={"async-image-loading"}
+                  placeholderClass={"async-image-placeholder"}/>
+              </div>
+              <h4 className={"text-center py-2"}>{item.name}</h4>
+            </Link>
+          </div>
+        );
+      })
     }
 
     return (
@@ -112,206 +150,104 @@ class Search extends Component {
     );
   }
 
-  fetchDataFromEndpoint() {
-    const { props } = this;
-    const { match, location, history } = props;
-    let page = match.params.page || 1;
-
-    props.searchUntrigger();
-
-    if (!props.loader.visible) {
-      props.loaderShow();
-    }
-
-    this.setState({
-      has_loaded: false,
-      page: page,
-      term: match.params.term || ""
-    });
-
-    let path = Marvel.heroesListQuery(
-      props.search.per_page,
-      page,
-      match.params.term || props.search.term,
-      props.search.orderBy,
-      props.search.orderByDesc
-    );
-
-    axios
-      .get(
-        path,
-        {},
-        {
-          headers: {
-            "Content-type": "application/json"
-          }
-        }
-      ).then(
-      res => {
-        const { data } = res.data;
-
-        let search_object = {
-          term: match.params.term || props.search.term,
-          children: data.results,
-          total: data.total,
-          current_page: page,
-          is_offline: false
-        };
-
-        let top = document.getElementById("main");
-        top.scrollTo(0, 0);
-
-        this.setState({
-          term: props.search.term,
-          has_loaded: true
-        });
-
-        props.searchSet(search_object);
-        props.loaderHide();
-      }
-    ).catch(
-      err => {
-        let search_object = {
-          term: match.params.term || props.search.term,
-          children: TestCollection.results,
-          total: TestCollection.total,
-          current_page: page,
-          is_offline: true
-        };
-
-        this.setState({
-          term: props.search.term,
-          has_loaded: true
-        });
-
-        props.searchSet(search_object);
-        props.loaderHide();
-      }
-    );
-  }
+  // React Lifecycle
+  // --------------------------------------------------------------------
 
   componentDidMount() {
-    this.fetchDataFromEndpoint();
+    this.loadHeroes();
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { props } = this;
+    const { match } = props;
 
-    console.log("-------------------------------------------------------------------------------------");
-    let prevPage = parseInt(this.state.page);
-    let currPage = (this.props.match.params.page)
-      ? parseInt(this.props.match.params.page) : 1;
-    let prevTerm = this.state.term;
-    let currTerm = (this.props.match.params.term)
-      ? this.props.match.params.term : "";
-
-      if (
-        (prevPage !== currPage || prevTerm !== currTerm)
-        || this.props.search.triggered
-      ) {
-        this.fetchDataFromEndpoint();
-      }
+    if (
+      match.params.page !== prevProps.match.params.page
+      || (
+        props.match.params.term !== prevProps.match.params.term
+      )
+      || (
+        props.search.triggered
+        && !props.search.load
+      )
+    ) {
+      this.loadHeroes();
+    }
   }
 
   render() {
-    const { props, state } = this;
-    const { match, location } = props;
+    const { props } = this;
+    const { match } = props;
 
-    if (state.has_loaded === false) {
-      return (
-        <div>
-          <SearchBox callable={this.goGoSearch}/>
-          <div className="container">
-            <hr/>
-          </div>
-          <div className={"container py-5"}>
-            <h1 className="text-center">
-              Loading...
-            </h1>
-          </div>
-        </div>
-      );
+    // Get page URI
+    let link = "/search/";
+    if (match.params.term !== undefined && match.params.term !== "") {
+      link += match.params.term + "/";
     }
 
     return (
       <div>
-        <SearchBox callable={this.goGoSearch}/>
+        <SearchBar callable={this.searchCallable}/>
         <div className="container">
           <hr/>
         </div>
-        <div className={"container py-5"}>
-          {(() => {
-            if (props.search.children.length > 0) {
-              if (state.term !== "") {
-                return (
-                  <h4 className="display-4 text-center mb-5">
-                    Displaying results for <strong><em>{state.term}</em></strong>
-                  </h4>
-                );
-              } else {
-                return (
-                  <h4 className="display-4 text-center mb-5">
-                    Displaying search results
-                  </h4>
-                );
-              }
-            }
-          })()}
+        <div className="container py-5">
+          {this.displaySearchTitle()}
+
           <div className="row">
             {this.displaySearchResults()}
           </div>
 
-          <SearchPagination
-            current={parseInt(props.search.current_page) || 1}
-            term={props.search.term || ""}
-            per_page={parseInt(props.search.per_page) || 12}
-            total={parseInt(props.search.total) || 0}
-            callable={this.searchNavigationCallable}/>
+          <Paginator
+            baseUrl={link}
+            currentPage={parseInt(match.params.page) || 1}
+            total={props.search.total || 1}
+            per_page={10}/>
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loader: state.loader,
-    search: state.search
-  };
-};
+const mapStateToProps = (state) => ({
+  hero: state.hero,
+  loader: state.loader,
+  search: state.search
+});
 
 const mapDispatchToProps = (dispatch) => ({
-  clearHero: () => {
-    dispatch(Actions.hero.clearHero());
-  },
-  clearComics: () => {
-    dispatch(Actions.hero.clearHeroComics());
-  },
-  clearSeries: () => {
-    dispatch(Actions.hero.clearHeroSeries());
-  },
-  clearEvents: () => {
-    dispatch(Actions.hero.clearHeroEvents());
-  },
-  clearStories: () => {
-    dispatch(Actions.hero.clearHeroStories());
-  },
-  loaderShow: () => {
-    dispatch(Actions.loader.showLoader());
-  },
-  loaderHide: () => {
-    dispatch(Actions.loader.hideLoader());
-  },
   searchSet: (search) => {
-    dispatch(Actions.search.setSearch(search))
+    dispatch(Actions.search.set(search));
+  },
+  clearChildren: () => {
+    dispatch(Actions.search.clearHeroes());
+  },
+  searchResults: (per_page) => {
+    dispatch(Actions.search.setResults(per_page));
+  },
+  searchError: (error) => {
+    dispatch(Actions.search.setError(error));
+  },
+  searchLoad: (load) => {
+    dispatch(Actions.search.load(load));
+  },
+  searchStatus: (status) => {
+    dispatch(Actions.search.loadStatus(status));
+  },
+  searchTerm: (term) => {
+    dispatch(Actions.search.setTerm(term));
   },
   searchTrigger: () => {
-    dispatch(Actions.search.trigger())
-  },
-  heroSet: (hero) => {
-    dispatch(Actions.hero.setHero(hero));
+    dispatch(Actions.search.trigger());
   },
   searchUntrigger: () => {
-    dispatch(Actions.search.untrigger())
+    dispatch(Actions.search.untrigger());
+  },
+  loaderHide: () => {
+    dispatch(Actions.loader.hide());
+  },
+  loaderShow: () => {
+    dispatch(Actions.loader.show());
   }
 });
 
@@ -321,4 +257,3 @@ Search = connect(
 )(Search);
 
 export default Search;
-

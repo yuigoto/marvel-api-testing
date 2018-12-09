@@ -1,10 +1,21 @@
-@import "scss/variables";
-@import "scss/extend";
+/**
+ * Index (SCSS)
+ * ----------------------------------------------------------------------
+ * @author    Fabio Y. Goto <lab@yuiti.com.br>
+ * @since     0.0.1
+ */
+@import "scss/partials/variables";
+
+// Imports must follow this order
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,700');
 @import "node_modules/bootstrap/scss/bootstrap";
 @import "node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
 @import "node_modules/@fortawesome/fontawesome-free/scss/regular.scss";
 @import "node_modules/@fortawesome/fontawesome-free/scss/brands.scss";
 @import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+
+// Load BS4 Extensions
+@import "scss/partials/extend";
 
 html,
 body {
@@ -25,6 +36,10 @@ body {
   position: relative;
 }
 
+#contents {
+  background: #fff;
+}
+
 #loader {
   width: 100%;
   position: fixed;
@@ -33,59 +48,51 @@ body {
   z-index: 999;
 }
 
-.mm-list-link {
-  color: $marvel-red;
-  transition: .3s;
-
-  &:hover {
-    color: lighten($marvel-red, 30);
-    opacity: .5;
-    text-decoration: none;
-    transform: scale(1.5, 1.5);
-  }
+.async-image {
+  background: #eee;
+  width: 100%;
+  padding: 0 0 100%;
+  position: relative;
+  overflow: hidden;
 }
 
-.mm-footer {
-  background: #000;
-  @extend .text-light;
-
-  & *:last-child {
-    margin-bottom: 0;
-  }
+.async-image-error {
 }
 
-.mm-pagination {
-  .page-item {
-    .page-link {
-      border-color: transparentize($marvel-red, .7);
-      color: $marvel-red;
-      transition: .3s;
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 .2rem transparentize($marvel-red, .8);
-    }
-
-    &:active,
-    &.active {
-      .page-link {
-        color: #fff;
-        background: $marvel-red;
-        border: 1px solid darken($marvel-red, 10);
-        box-shadow: 0 0 0 .2rem transparentize($marvel-red, .5);
-      }
-    }
-  }
+.async-image-loading {
 }
 
-.mm-wiki-link {
-  color: $marvel-red;
-  transition: .3s;
+.async-image-placeholder {
+  width: 160%;
+  margin: auto;
+  position: absolute;
+  top: -1000%;
+  right: -1000%;
+  bottom: -1000%;
+  left: -1000%;
+}
 
-  &:hover {
-    color: lighten($marvel-red, 30);
-    opacity: .5;
-    text-decoration: none;
-    transform: scale(1.5, 1.5);
+.async-image-item {
+  width: 160%;
+  margin: auto;
+  position: absolute;
+  top: -1000%;
+  right: -1000%;
+  bottom: -1000%;
+  left: -1000%;
+  animation: async-image-show 1s;
+}
+
+@keyframes async-image-show {
+  from {
+    transform: scale(1.5);
+    filter: blur(10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    filter: blur(0px);
+    opacity: 1;
   }
 }

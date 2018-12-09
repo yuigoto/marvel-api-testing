@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 
-import header_styles from "scss/header.module.scss";
-import Logo from "components/general/Logo";
+import header_styles from "review/scss/header.module.scss";
+import Logo from "review/components/general/Logo";
 
 const Header = ({children,is_home,match,location}) => {
   if (location.pathname && location.pathname !== "/") {

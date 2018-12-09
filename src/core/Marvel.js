@@ -1,3 +1,4 @@
+import axios from "axios";
 import md5 from "md5";
 import Endpoints from "core/Endpoints";
 
@@ -12,14 +13,25 @@ class Marvel {
   // --------------------------------------------------------------------
 
   /**
-   * Base path to the Marvel public API.
+   * Axios instance.
+   *
+   * @type {*}
    */
-  basePath = "https://gateway.marvel.com/v1/public";
+  _API;
+
+  /**
+   * API root path.
+   *
+   * @type {string}
+   */
+  _basePath = "https://gateway.marvel.com/v1/public/";
 
   /**
    * Public API key.
    *
    * Must be declared on the `.env` file at the application root.
+   *
+   * @type {String}
    */
   _publicKey = process.env.REACT_APP_MARVEL_PUBLIC_KEY;
 
@@ -27,17 +39,42 @@ class Marvel {
    * Private API key.
    *
    * Must be declared on the `.env` file at the application root.
+   *
+   * @type {String}
    */
   _privateKey = process.env.REACT_APP_MARVEL_PRIVATE_KEY;
 
-  // Methods
+  // Constructor
   // --------------------------------------------------------------------
 
   /**
-   * @param {string} url
-   * @returns {any}
+   * Constructor.
    */
-  getHeroResourceType(url) {
+  constructor() {
+    this._API = axios.create({
+      baseURL: this._basePath,
+      responseType: "json"
+    });
+  }
+
+  // Public Methods
+  // --------------------------------------------------------------------
+
+  /**
+   * @param urlOrPath
+   * @returns {Promise<*>}
+   */
+  async fetchFromUrlOrPath(urlOrPath) {
+    return await this._API.get(
+      urlOrPath
+    );
+  }
+
+  /**
+   * @param {string} url
+   * @returns {string}
+   */
+  getHeroResourceTypeFromUrl(url) {
     const regex = /https?:\/\/([^/]+\/)+([^/?&]+)/g;
     let matches = regex.exec(url);
     return (matches[2] !== null && matches[2] !== undefined)
@@ -46,23 +83,15 @@ class Marvel {
   }
 
   /**
-   * @param {string} url
-   * @returns {string|boolean}
+   * @param {String} url
+   * @param {Number} results
+   * @param {Number} page
+   * @returns {*}
    */
-  setResourceUrlQuery(
-    url,
-    results = 10,
-    page = 1
-  ) {
-    if (
-      url === null
-      || url === undefined
-      || url === ""
-    ) {
-      return false;
-    }
+  setResourceQuery(url, results = 10, page = 1) {
+    if (url === null || url === undefined || url === "") return false;
 
-    return url
+    return url.trim()
       + "?"
       + this._buildQueryStringFromParams(
         this._setResourceQueryParams(results, page)
@@ -71,23 +100,13 @@ class Marvel {
 
   /**
    * @param {Number} heroId
-   * @returns {string|boolean}
+   * @returns {*}
    */
-  singleHeroQuery(heroId)
-  {
-    if (
-      heroId === null
-      || heroId === undefined
-      || heroId === ""
-    ) {
-      return false;
-    }
+  setHeroQuery(heroId) {
+    if (heroId === null || heroId === undefined || heroId === "") return false;
 
-    return this.basePath
-      + Endpoints.characters.base
-      + "/"
-      + heroId
-      + "?"
+    return Endpoints.characters.base
+      + `/${heroId}?`
       + this._buildQueryStringFromParams(
         this._setQueryHashParams()
       );
@@ -95,29 +114,22 @@ class Marvel {
 
   /**
    * @param {Number} results
-   *    Results per page
    * @param {Number} page
-   *    Current page being requested
    * @param {String} startsWith
-   *    The hero's name must start with this string, leave it blank to ignore
-   * @param {String} orderBy
-   *    Must be either "name" or "modified"
+   * @param {Number} orderBy
    * @param {Boolean} orderByDesc
-   *    Reverses the order
-   * @returns {string}
+   * @returns {*}
    */
-  heroesListQuery(
+  setSearchQuery(
     results = 10,
     page = 1,
     startsWith = null,
     orderBy = "name",
     orderByDesc = false
   ) {
-    // Set base values
     if (orderBy !== "name" && orderBy !== "modified") orderBy = "name";
     if (orderByDesc) orderBy = "-" + orderBy;
 
-    // Query params
     let params = this._setSearchQueryParams(
       results,
       page,
@@ -125,18 +137,16 @@ class Marvel {
       orderBy
     );
 
-    if (process.env.NODE_ENV === "development") {
-      console.log(params);
-    }
-
-    return this.basePath
-      + Endpoints.characters.base
-      + "?"
-      + this._buildQueryStringFromParams(params);
+    return Endpoints.characters.base
+      + `?${this._buildQueryStringFromParams(params)}`;
   }
 
+  // Private Methods
+  // --------------------------------------------------------------------
+
   /**
-   * @param {Object} params
+   * @param params
+   * @returns {*}
    * @private
    */
   _buildQueryStringFromParams(params) {
@@ -146,11 +156,7 @@ class Marvel {
       let query = [];
 
       for (let key of keys) {
-        query.push(key + "=" + params[key]);
-      }
-
-      if (process.env.NODE_ENV === "development") {
-        console.log(query);
+        query.push(`${key}=${params[key]}`);
       }
 
       return query.join("&");
@@ -160,65 +166,34 @@ class Marvel {
   }
 
   /**
-   * Returns an object containing the public API key, the API hash and a
-   * timestamp used to authenticate the request.
-   *
-   * @returns {
-   *    {
-   *      apikey: string,
-   *      hash: string,
-   *      ts: string
-   *    }
-   * }
+   * @returns {*}
    * @private
    */
   _setQueryHashParams() {
-    // Set query parameter object
-    let query = {
+    let queryParams = {
       apikey: this._publicKey
     };
 
-    // Timestamp for the hash
-    let ts = Date.now();
-    query["ts"] = ts;
-    if (process.env.NODE_ENV === "development") {
-      console.log(ts.toString());
-    }
-
-    // Set hash
-    query["hash"] = md5(
-      ts.toString() + this._privateKey + this._publicKey
+    let timestamp = Date.now();
+    queryParams["ts"] = timestamp;
+    queryParams["hash"] = md5(
+      timestamp.toString() + this._privateKey + this._publicKey
     );
 
-    return query;
+    return queryParams;
   }
 
   /**
-   * @param {Number} results
-   * @param {Number} page
-   * @param {String} startsWith
-   * @param {String} orderBy
-   * @param {Boolean} orderByDesc
-   * @returns {
-   *    {
-   *      offset: number,
-   *      limit: number,
-   *      startsWith: string,
-   *      orderBy: string,
-   *      orderByDesc: boolean
-   *    }
-   * }
+   * @param results
+   * @param page
+   * @returns {*}
    * @private
    */
   _setResourceQueryParams(results, page) {
-    // Set offset and limit based on results + page
     let offset = (results * page) - results;
-    let limit = results;
-
-    // Set query parameter object
     let query = {
       offset,
-      limit
+      limit: results
     };
 
     return Object.assign(query, this._setQueryHashParams());
@@ -229,31 +204,17 @@ class Marvel {
    * @param {Number} page
    * @param {String} startsWith
    * @param {String} orderBy
-   * @param {Boolean} orderByDesc
-   * @returns {
-   *    {
-   *      offset: number,
-   *      limit: number,
-   *      startsWith: string,
-   *      orderBy: string,
-   *      orderByDesc: boolean
-   *    }
-   * }
+   * @returns {*}
    * @private
    */
   _setSearchQueryParams(results, page, startsWith, orderBy) {
-    // Set offset and limit based on results + page
     let offset = (results * page) - results;
-    let limit = results;
-
-    // Set query parameter object
     let query = {
       offset,
-      limit,
-      orderBy
+      orderBy,
+      limit: results
     };
 
-    // Is startsWith empty?
     if (
       startsWith !== null
       && startsWith !== undefined

@@ -1,392 +1,295 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import classnames from "classnames";
-import axios from "axios";
-
 import Actions from "state/Actions";
-
-import TestHero from "assets/data/TestHero";
 import Marvel from "core/Marvel";
-import HeroProfile from "components/hero/HeroProfile";
-import AsyncImage from "components/general/AsyncImage";
+import InitialState from "state/InitialState";
+import Paginator from "components/base/Paginator";
+import SearchBar from "components/search/SearchBar";
 
-// Component class
 class Test extends Component {
-  // Properties
-  // --------------------------------------------------------------------
-
   /**
-   * Component mounted status.
-   *
-   * @type {boolean}
-   * @private
-   */
-  _mounted = false;
-
-  // Constructor
-  // -------------------------------------------------------------------
-
-  /**
-   * Constructor.
-   *
-   * @param {Object} props
+   * @param {*} props
    */
   constructor(props) {
     super(props);
-    this.state = {};
 
-    // Method binding
-    this.classNames = this.classNames.bind(this);
-    this.componentIsMounted = this.componentIsMounted.bind(this);
-    this.searchLoadPage1 = this.searchLoadPage1.bind(this);
-    this.searchLoadPage10 = this.searchLoadPage10.bind(this);
-    this.displaySearchResults = this.displaySearchResults.bind(this);
-    this.searchSetTerm = this.searchSetTerm.bind(this);
-    this.searchDoSearch = this.searchDoSearch.bind(this);
+    this.callableTest = this.callableTest.bind(this);
+    this.isLoading = this.isLoading.bind(this);
+    this.logState = this.logState.bind(this);
+    this.loadHeroes = this.loadHeroes.bind(this);
+    this.toggleLoader = this.toggleLoader.bind(this);
+    this.searchStatus = this.searchStatus.bind(this);
   }
 
   // Methods
   // --------------------------------------------------------------------
 
-  /**
-   * Returns the component's classes, use it to join classes from received
-   * props with a default one.
-   *
-   * @returns {string}
-   */
-  classNames() {
+  callableTest() {
     const { props } = this;
-    return classnames(
-      "default-class",
-      props.className
+    const { history } = props;
+
+    if (history && history !== undefined) {
+      let path = "/search";
+
+      this.props.searchLoad(false);
+      this.props.searchStatus(false);
+
+      if (props.search.term !== "") {
+        path += "/" + props.search.term;
+      }
+
+      history.push(path);
+    }
+  }
+
+  toggleLoader() {
+    this.props.loaderShow();
+
+    setTimeout(() => {
+      this.props.loaderHide();
+    }, 3000);
+  }
+
+  logState() {
+    console.log(
+      this.props.hero,
+      this.props.loader,
+      this.props.search
     );
   }
 
-  /**
-   * Returns the component's mounted status.
-   *
-   * @returns {boolean}
-   */
-  componentIsMounted() {
-    return this._mounted;
-  }
-
-  searchLoadPage1() {
-    const { props } = this;
-    const { search } = props;
-
-    let path = Marvel.heroesListQuery(
-      search.per_page,
-      1,
-      search.term,
-      search.orderBy,
-      search.orderByDesc
-    );
-
-    props.loaderShow();
-
-    axios.get(
-      path,
-      {},
-      {
-        headers: {
-          "Content-type": "application/json"
-        }
-      }
-    ).then(
-      res => {
-        const { data } = res.data;
-
-        let search_object = {
-          children: data.results,
-          total: data.total,
-          current_page: 10
-        };
-
-        props.searchSet(search_object);
-
-        props.loaderHide();
-      }
-    ).catch(
-      err => {
-      }
-    );
-  }
-
-  searchLoadPage10() {
-    const { props } = this;
-    const { search } = props;
-
-    let path = Marvel.heroesListQuery(
-      search.per_page,
+  loadHeroes() {
+    let url = Marvel.setSearchQuery(
       10,
-      search.term,
-      search.orderBy,
-      search.orderByDesc
+      this.props.match.params.page || 1,
+      this.props.search.term || this.props.match.params.term || "",
+      this.props.search.prderBy,
+      this.props.search.orderByDesc
     );
 
-    props.loaderShow();
+    let get = Marvel.fetchFromUrlOrPath(url);
 
-    axios.get(
-      path,
-      {},
-      {
-        headers: {
-          "Content-type": "application/json"
-        }
-      }
-    ).then(
-      res => {
+    this.props.clearChildren();
+    this.props.searchLoad(true);
+    this.props.searchStatus(false);
+    this.props.loaderShow();
+    this.props.searchError(false);
+    this.props.searchTrigger();
 
-        const { data } = res.data;
+    get
+      .then(res => {
+        let search = InitialState.search();
+        search.children = res.data.data.results;
+        search.total = res.data.data.total;
 
-        let search_object = {
-          children: data.results,
-          total: data.total,
-          current_page: 10
-        };
+        this.props.searchSet(search);
+        this.props.searchLoad(false);
+        this.props.searchStatus(true);
+        this.props.searchUntrigger();
+        this.props.loaderHide();
+      })
+      .catch(err => {
+        console.log(
+          "Error loading your request"
+        );
 
-        props.searchSet(search_object);
-
-        props.loaderHide();
-      }
-    ).catch(
-      err => {
-      }
-    );
+        this.props.searchLoad(false);
+        this.props.searchError(true);
+        this.props.searchStatus(false);
+        this.props.searchUntrigger();
+        this.props.loaderHide();
+      });
   }
 
-  displaySearchResults() {
-    const { search } = this.props;
+  isLoading() {
+    const { props } = this;
 
-    if (search.children.length > 0) {
+    if (props.loader.visible) {
       return (
-        search.children.map((item, index) => {
-          return (
-            <div key={index}>
-              <h4>{item.name}</h4>
-              <div className={"w-25"}>
-                <AsyncImage source={item.thumbnail.path + "." + item.thumbnail.extension}/>
-              </div>
-            </div>
-          );
-        })
+        <div className={"alert alert-primary"}>
+          Loader is Visible
+        </div>
       );
     }
 
-    return null;
-  }
-
-  searchSetTerm(evt) {
-    const { props } = this;
-
-    props.searchSetTerm(evt.currentTarget.value);
-  }
-
-  searchDoSearch() {
-    const { props } = this;
-    const { search } = props;
-
-    let path = Marvel.heroesListQuery(
-      search.per_page,
-      1,
-      search.term,
-      search.orderBy,
-      search.orderByDesc
-    );
-
-    props.loaderShow();
-
-    axios.get(
-      path,
-      {},
-      {
-        headers: {
-          "Content-type": "application/json"
-        }
-      }
-    ).then(
-      res => {
-        console.log(res);
-
-        const { data } = res.data;
-        console.log(data);
-
-        let search_object = {
-          children: data.results,
-          total: data.total,
-          current_page: 10
-        };
-
-        props.searchSet(search_object);
-
-        props.loaderHide();
-      }
-    ).catch(
-      err => {
-        console.log(err);
-      }
+    return (
+      <div className={"alert alert-secondary"}>
+        Loader is NOT Visible
+      </div>
     );
   }
 
-  // Lifecycle Methods
-  // --------------------------------------------------------------------
+  searchStatus() {
+    const { props } = this;
+    const { load, load_status, children, error } = props.search;
 
-  /**
-   * Renders the component.
-   */
-  render() {
-    const { props, state } = this;
+    if (load === false && load_status === false && error === true) {
+      return (
+        <div className={"alert alert-danger"}>
+          Could Not Load Data
+        </div>
+      );
+    }
 
-    // If the component is navigation-aware, comment if not needed
-    const { match, location, history } = props;
+    if (!load_status && !load && children.length < 1) {
+      return (
+        <div className={"alert alert-warning"}>
+          Data not yet loaded
+        </div>
+      );
+    }
+
+    if (
+      !load_status && load
+    ) {
+      return (
+        <div className={"alert alert-warning"}>
+          Data is Loading
+        </div>
+      );
+    }
 
     return (
-      <div className={this.classNames()}>
-        <button onClick={(() => {
-          props.clearHeroComics();
-        })}>
-          Clear Comics
-        </button>
-        <button onClick={(() => {
+      <div className={"alert alert-primary"}>
+        Loaded Data
+      </div>
+    );
+  }
 
-          console.log(props.hero.data.comics);
-          props.setHeroComics({
-            children: props.hero.data.comics.children,
-            available: props.hero.data.comics.available,
-            page: props.hero.data.comics.page
-          });
-        })}>
-          Set Comics
-        </button>
+  // React Lifecycle
+  // --------------------------------------------------------------------
 
-        <hr/>
+  componentDidMount() {
+    this.loadHeroes();
 
-        <input type={"text"} name={"term"} onChange={this.searchSetTerm}/>
-        <input type="submit" onClick={this.searchDoSearch}/>
+    console.log("MOUNT");
+  }
 
-        <hr/>
+  componentDidUpdate(prevProps, prevState) {
+    const { props } = this;
+    const { match } = props;
 
-        <HeroProfile/>
+    console.log("UPDATE");
+    console.log(props.match.params.term !== prevProps.match.params.term);
 
-        <hr/>
+    if (
+      match.params.page !== prevProps.match.params.page
+      || (
+        props.match.params.term !== prevProps.match.params.term
+      )
+    ) {
+      console.log("TRIGGER");
+      this.loadHeroes();
+    }
+  }
 
-        <button onClick={this.searchLoadPage1}>
-          Fetch Heroes (page 1)
-        </button>
+  render() {
+    const { props } = this;
+    const { match } = props;
 
-        <button onClick={this.searchLoadPage10}>
-          Fetch Heroes (page 10)
-        </button>
+    // Get page
+    let link = "/search/";
+    if (match.params.term !== undefined && match.params.term !== "") {
+      link += match.params.term + "/";
+    }
 
-        <hr/>
-
-        <button onClick={props.heroClear}>
-          Apagar Hero
-        </button>
-
-        <button
-          onClick={(() => {
-            props.heroSet(TestHero)
-          })}>
-          Definir Hero
-        </button>
+    return (
+      <div className={"container py-4"}>
+        <SearchBar callable={this.callableTest}/>
 
         <hr/>
 
-        <button onClick={props.loaderShow}>
-          Exibir Loader
-        </button>
+        <div className={"btn-group btn-group-sm"}>
+          <button className={"btn btn-success"} onClick={this.loadHeroes}>
+            Load Heroes
+          </button>
 
-        <button onClick={props.loaderHide}>
-          Ocultar Loader
-        </button>
+          <hr/>
+
+          <button className={"btn btn-default"} onClick={this.toggleLoader}>
+            Toggle Loader
+          </button>
+          <button className={"btn btn-dark"} onClick={this.logState}>
+            Log All
+          </button>
+        </div>
+
+        <hr/>
+
+        {this.isLoading()}
+
+        <hr/>
+
+        {this.searchStatus()}
+
+        <hr/>
+
+        <Paginator
+          baseUrl={link}
+          currentPage={parseInt(match.params.page) || 1}
+          total={props.search.total || 1}
+          per_page={10}/>
+
+        <hr/>
+
+        {(() => {
+          if (this.props.search.children.length > 0) {
+            return this.props.search.children.map((item, index) => {
+              return (
+                <span className={"badge badge-success"} key={index}>
+                    {item.name}
+                  </span>
+              );
+            });
+          }
+        })()}
       </div>
     );
   }
 }
 
-// Prop validation
-// ----------------------------------------------------------------------
+const mapStateToProps = (state) => ({
+  hero: state.hero,
+  loader: state.loader,
+  search: state.search
+});
 
-// Set default props
-Test.defaultProps = {
-  className: ""
-};
-
-// Validation
-Test.propTypes = {
-  className: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string)
-  ])
-};
-
-// Redux
-// ----------------------------------------------------------------------
-
-/**
- * Maps Redux's state to component props.
- *
- * @param {Object} state
- * @returns {Object}
- */
-const mapStateToProps = (state) => {
-  console.log(state);
-
-  return {
-    term: state.search.term,
-    orderBy: state.search.orderBy,
-    orderByDesc: state.search.orderByDesc,
-    children: state.search.children,
-    total: state.search.total,
-    per_page: state.search.per_page,
-    current_page: state.search.current_page,
-    hero: state.hero,
-    search: state.search
-  };
-};
-
-/**
- * Maps Redux's dispatch method to props.
- *
- * @param {function} dispatch
- * @returns {Object}
- */
 const mapDispatchToProps = (dispatch) => ({
   searchSet: (search) => {
-    dispatch(Actions.search.setSearch(search))
+    dispatch(Actions.search.set(search));
   },
-  searchSetTerm: (term) => {
-    dispatch(Actions.search.setTerm(term))
+  clearChildren: () => {
+    dispatch(Actions.search.clearHeroes());
   },
-  heroClear: () => {
-    dispatch(Actions.hero.clearHero());
+  searchResults: (per_page) => {
+    dispatch(Actions.search.setResults(per_page));
   },
-  heroSet: (hero) => {
-    dispatch(Actions.hero.setHero(hero));
+  searchError: (error) => {
+    dispatch(Actions.search.setError(error));
   },
-
-  loaderShow: () => {
-    dispatch(Actions.loader.showLoader());
+  searchLoad: (load) => {
+    dispatch(Actions.search.load(load));
+  },
+  searchStatus: (status) => {
+    dispatch(Actions.search.loadStatus(status));
+  },
+  searchTrigger: () => {
+    dispatch(Actions.search.trigger());
+  },
+  searchUntrigger: () => {
+    dispatch(Actions.search.untrigger());
   },
   loaderHide: () => {
-    dispatch(Actions.loader.hideLoader());
+    dispatch(Actions.loader.hide());
   },
-  setHeroComics: (comics) => {
-    dispatch(Actions.hero.setHeroComics(comics))
-  },
-  clearHeroComics: () => {
-    dispatch(Actions.hero.clearHeroComics())
+  loaderShow: () => {
+    dispatch(Actions.loader.show());
   }
 });
 
-// Connects to react-redux
 Test = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Test);
 
-// ----------------------------------------------------------------------
 export default Test;

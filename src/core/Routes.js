@@ -1,18 +1,12 @@
 /**
- * BOOMERANGOO : Core/Routes
+ * Core/Routes
  * ----------------------------------------------------------------------
- * Exports the routes array, to be used by the `BrowserRouter`.
- *
- * @author      Fabio Y. Goto <fabio.goto@boomerangoo.com.br>
- * @since       0.0.1
+ * @author    Fabio Y. Goto <lab@yuiti.com.br>
+ * @since     0.0.1
  */
-
-// Import Views
-import Search from "views/Search";
 import Home from "views/Home";
-import Hero from "views/Hero";
+import Search from "views/Search";
 
-// Export the routes
 export default [
   {
     path: "/",
@@ -38,15 +32,5 @@ export default [
     path: "/search/:term/page/:page(\\d+)",
     exact: true,
     component: Search
-  },
-  {
-    path: "/hero",
-    exact: true,
-    component: Hero
-  },
-  {
-    path: "/hero/:hero_id(\\d+)",
-    exact: true,
-    component: Hero
   }
 ];

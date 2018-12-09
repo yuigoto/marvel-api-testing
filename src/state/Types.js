@@ -8,57 +8,83 @@
 /**
  * @type {
  *    {
- *      CLEAR_HERO: string,
- *      SELECT_HERO: string
+ *      CLEAR: string,
+ *      CLEAR_COMICS: string,
+ *      CLEAR_EVENTS: string,
+ *      CLEAR_SERIES: string,
+ *      CLEAR_STORIES: string,
+ *      LOAD: string,
+ *      LOAD_STATUS: string,
+ *      SET: string,
+ *      SET_COMICS: string,
+ *      SET_EVENTS: string,
+ *      SET_SERIES: string,
+ *      SET_STORIES: string
  *    }
  * }
  */
 export const Hero = {
-  CLEAR_HERO: "CLEAR_HERO",
-  CLEAR_HERO_COMICS: "CLEAR_HERO_COMICS",
-  CLEAR_HERO_EVENTS: "CLEAR_HERO_EVENTS",
-  CLEAR_HERO_SERIES: "CLEAR_HERO_SERIES",
-  CLEAR_HERO_STORIES: "CLEAR_HERO_STORIES",
-  RESET_HERO: "RESET_HERO",
-  SET_HERO: "SET_HERO",
-  SET_HERO_COMICS: "SET_HERO_COMICS",
-  SET_HERO_EVENTS: "SET_HERO_EVENTS",
-  SET_HERO_SERIES: "SET_HERO_SERIES",
-  SET_HERO_STORIES: "SET_HERO_STORIES"
+  CLEAR:                "HERO/CLEAR",
+  CLEAR_COMICS:         "HERO/CLEAR/COMICS",
+  CLEAR_EVENTS:         "HERO/CLEAR/EVENTS",
+  CLEAR_SERIES:         "HERO/CLEAR/SERIES",
+  CLEAR_STORIES:        "HERO/CLEAR/STORIES",
+  LOAD:                 "HERO/LOAD",
+  LOAD_STATUS:          "HERO/LOAD/STATUS",
+  RESET:                "HERO/RESET",
+  SET:                  "HERO/SET",
+  SET_COMICS:           "HERO/SET/COMICS",
+  SET_EVENTS:           "HERO/SET/EVENTS",
+  SET_SERIES:           "HERO/SET/SERIES",
+  SET_STORIES:          "HERO/SET/STORIES",
 };
 
 /**
  * @type {
  *    {
- *      HIDE_LOADER: string,
- *      SHOW_LOADER: string
+ *      HIDE: string,
+ *      SHOW: string
  *    }
  * }
  */
 export const Loader = {
-  HIDE_LOADER: "HIDE_LOADER",
-  SHOW_LOADER: "SHOW_LOADER"
+  HIDE: "LOADER/HIDE",
+  SHOW: "LOADER/SHOW"
 };
 
 /**
  * @type {
  *    {
+ *      CLEAR: string,
  *      CLEAR_HEROES: string,
- *      FETCH_HEROES: string
+ *      LOAD: string,
+ *      LOAD_STATUS: string,
+ *      SET: string,
+ *      SET: string,
+ *      SET_ERROR: boolean,
+ *      SET_ORDER_DIRECTION: string,
+ *      SET_PAGE: string,
+ *      SET_RESULTS: string,
+ *      SET_TERM: string,
+ *      SET_TOTAL: string,
+ *      TRIGGER: string,
+ *      UNTRIGGER: string
  *    }
  * }
  */
 export const Search = {
-  SEARCH_CLEAR: "SEARCH_CLEAR",
-  SEARCH_HEROES_CLEAR: "SEARCH_HEROES_CLEAR",
-  SEARCH_HEROES_LOAD: "SEARCH_HEROES_LOAD",
-  SET_ORDER: "SET_ORDER",
-  SET_ORDER_BY_DESC: "SET_ORDER_BY_DESC",
-  SET_PAGE: "SET_PAGE",
-  SET_RESULTS: "SET_RESULTS",
-  SET_SEARCH: "SET_SEARCH",
-  SET_TERM: "SET_TERM",
-  SET_TOTAL: "SET_TOTAL",
-  TRIGGER: "TRIGGER",
-  UNTRIGGER: "UNTRIGGER"
+  CLEAR:                "SEARCH/CLEAR",
+  CLEAR_HEROES:         "SEARCH/HEROES",
+  LOAD:                 "SEARCH/LOAD",
+  LOAD_STATUS:          "SEARCH/LOAD/STATUS",
+  SET:                  "SEARCH/SET",
+  SET_ERROR:            "SEARCH/SET/ERROR",
+  SET_ORDER:            "SEARCH/SET/ORDER",
+  SET_ORDER_DIRECTION:  "SEARCH/SET/DIRECTION",
+  SET_PAGE:             "SEARCH/SET/PAGE",
+  SET_RESULTS:          "SEARCH/SET/RESULTS",
+  SET_TERM:             "SEARCH/SET/TERM",
+  SET_TOTAL:            "SEARCH/SET/TOTAL",
+  TRIGGER:              "SEARCH/TRIGGER",
+  UNTRIGGER:            "SEARCH/UNTRIGGER"
 };

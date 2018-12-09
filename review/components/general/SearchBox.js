@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import search_module from "scss/search.module.scss";
-import Actions from "state/Actions";
+import search_module from "review/scss/search.module.scss";
+import Actions from "review/state/Actions";
 
 class SearchBox extends Component {
   /**
@@ -31,6 +31,8 @@ class SearchBox extends Component {
     evt.preventDefault();
 
     if (this.props.callable) this.props.callable();
+    this.props.searchTrigger();
+    this.props.loaderShow();
   }
 
   render() {
@@ -83,6 +85,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   searchSetTerm: (term) => {
     dispatch(Actions.search.setTerm(term))
+  },
+  searchTrigger: () => {
+    dispatch(Actions.search.trigger())
+  },
+  loaderShow: () => {
+    dispatch(Actions.loader.showLoader());
   }
 });
 

@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import axios from "axios";
-import Actions from "state/Actions";
-import SearchBox from "components/general/SearchBox";
-import Marvel from "core/Marvel";
-import HeroProfile from "components/hero/HeroProfile";
+import Actions from "review/state/Actions";
+import SearchBox from "review/components/general/SearchBox";
+import HeroProfile from "review/components/hero/HeroProfile";
 
 class Hero extends Component {
   constructor(props) {
